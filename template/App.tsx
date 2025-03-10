@@ -1,14 +1,14 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import { LogBox, StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { MenuProvider } from 'react-native-popup-menu';
 import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import ReqsProvider from './src/components/common/ReqsProvider';
 import RootNavigation from './src/navigation';
 import { persistor, store } from './src/redux/store';
-import { MenuProvider } from 'react-native-popup-menu';
-import { LogBox, StatusBar } from 'react-native';
 import { COLORS } from './src/utils/theme';
 
 const App: React.FC = () => {
