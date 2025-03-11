@@ -10,9 +10,11 @@ import ReqsProvider from './src/components/common/ReqsProvider';
 import RootNavigation from './src/navigation';
 import { persistor, store } from './src/redux/store';
 import { COLORS } from './src/utils/theme';
+import { useNotifications } from './src/utils/hooks/useNotifications';
 
 const App: React.FC = () => {
   LogBox.ignoreAllLogs();
+  useNotifications()
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <StatusBar backgroundColor={COLORS.white} barStyle={'dark-content'} />
