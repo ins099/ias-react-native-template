@@ -1,3 +1,5 @@
+import { check, Permission, request, RESULTS } from "react-native-permissions";
+
 export const monthNames = [
   'January',
   'February',
@@ -18,7 +20,7 @@ export const formatDateTimeString = (
   _format?: string,
 ) => {
   const date = new Date(dateString);
-  const options = {day: '2-digit', month: 'long', year: 'numeric'};
+  const options = { day: '2-digit', month: 'long', year: 'numeric' };
   const formattedDate = date
     .toLocaleDateString('en-GB', options as any)
     .replace(/ /g, ' ');
@@ -26,7 +28,7 @@ export const formatDateTimeString = (
   return formattedDate;
 };
 
-export const formateDate = (dateVal: Date, type?: string = 'dd-MM-YYYY') => {
+export const formateDate = (dateVal: Date, type: string = 'dd-MM-YYYY') => {
   const date = new Date(dateVal);
   // let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
   let day = String(date.getDate()).padStart(2, '0');
@@ -64,7 +66,7 @@ export const mergeDataWithoutDuplicates = (
 //   };
 // };
 
-export function timeAgo(dateStr) {
+export function timeAgo(dateStr: string) {
   const now = new Date();
   const date = new Date(dateStr);
   const diffInMs = now - date;
@@ -90,21 +92,21 @@ export function timeAgo(dateStr) {
   }
 }
 
-export function extractPlaceDetails(data) {
+export function extractPlaceDetails(data: any) {
   const placeName =
     data.address_components.find(
-      component =>
+      (component: any) =>
         component.types.includes('establishment') ||
         component.types.includes('point_of_interest'),
     )?.long_name || '';
 
   const city =
-    data.address_components.find(component =>
+    data.address_components.find((component: any) =>
       component.types.includes('locality'),
     )?.long_name || '';
 
   const country =
-    data.address_components.find(component =>
+    data.address_components.find((component: any) =>
       component.types.includes('country'),
     )?.long_name || '';
 
@@ -118,3 +120,29 @@ export function extractPlaceDetails(data) {
     description,
   };
 }
+
+
+export const checkAndRequestPermission = async (permission: Permission) => {
+  try {
+    const permissionStatus = await check(permission);
+
+    if (permissionStatus === RESULTS.GRANTED) {
+      console.log(`${permission} is granted`);
+      return true;
+    }
+
+    const requestStatus = await request(permission);
+
+    if (requestStatus === RESULTS.GRANTED) {
+      console.log(`${permission} granted after request`);
+      return true;
+    } else {
+      console.log(`${permission} denied`);
+      return false;
+    }
+
+  } catch (error) {
+    console.error('Permission error: ', error);
+    return false;
+  }
+};
